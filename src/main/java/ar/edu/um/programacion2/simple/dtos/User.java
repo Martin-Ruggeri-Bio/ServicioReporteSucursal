@@ -1,7 +1,5 @@
 package ar.edu.um.programacion2.simple.dtos;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -9,7 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserTokenResponse {
-    @NotNull
+public class User {
+    private String id;
+    private String userName;
     private String token;
 }
