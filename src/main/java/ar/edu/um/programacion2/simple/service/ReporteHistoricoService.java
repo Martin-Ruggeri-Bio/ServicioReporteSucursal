@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import ar.edu.um.programacion2.simple.dtos.Sales;
+import lombok.extern.slf4j.Slf4j;
 import ar.edu.um.programacion2.simple.dtos.DateRange;
 import ar.edu.um.programacion2.simple.dtos.RespuestaReporte;
 import ar.edu.um.programacion2.simple.dtos.ReporteRecibido;
@@ -16,25 +17,28 @@ import ar.edu.um.programacion2.simple.dtos.ReporteRecibido;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 public class ReporteHistoricoService {
 
 	@Value("${servicioFranquicia.token_id}")
     private String id_tocken_reporte;
 
+    @Value("${logginSucursal.token_id}")
+    private String id_tocken_sucursal;
+
 	public Sales listar_ventas_para_reporte(DateRange dateRange)  {
+        log.debug("Listar ventas para hacer un reporte");
+        
         WebClient webClient = WebClient
             .builder()
             .baseUrl("http://localhost:8085/sale/date-between")
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.id_tocken_reporte)
             .build();
 
         // Realiza la llamada POST a la API del servicio de reporte y almacena el resultado en un Mono de tipo Message
         Mono<Sales> sales = webClient
             .post()
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.id_tocken_reporte + "\"")
-            .body(BodyInserters.fromValue(dateRange))
+            .body(Mono.just(dateRange), DateRange.class)
             .retrieve()
             .bodyToMono(Sales.class);
         
@@ -60,9 +64,9 @@ public class ReporteHistoricoService {
     // }
 
 	@Transactional
-    public ReporteRecibido enviar_reporte_historico(Sales sales)  {
+    public void enviar_reporte_historico(Sales sales)  {
 		RespuestaReporte respuestaReporte = new RespuestaReporte("respuesta_reporte", sales);
-
+        log.debug("Respuesta de reporte creada");
         System.out.println(this.id_tocken_reporte);
         WebClient webClient = WebClient
             .builder()
@@ -75,11 +79,12 @@ public class ReporteHistoricoService {
             .post()
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.id_tocken_reporte + "\"")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.id_tocken_sucursal + "\"")
             .body(BodyInserters.fromValue(respuestaReporte))
             .retrieve()
             .bodyToMono(ReporteRecibido.class);
         
-		return reporteRecibido.block();
+        log.debug("Respuesta de reporte enviada");
+
     }
 }
