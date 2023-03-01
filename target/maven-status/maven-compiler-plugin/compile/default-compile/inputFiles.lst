@@ -6,9 +6,9 @@
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/User.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/Application.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/controller/ReporteController.java
+/home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/DatoReportadoEstadoDTO.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/DateRange.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/Sale.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/RespuestaReporte.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/PeticionReporteHistorico.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/Message.java
-/home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/SaleData.java
