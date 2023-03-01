@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.simple.controller;
 
 import ar.edu.um.programacion2.simple.dtos.DateRange;
+import ar.edu.um.programacion2.simple.dtos.Message;
 import ar.edu.um.programacion2.simple.dtos.PeticionReporteHistorico;
 import ar.edu.um.programacion2.simple.dtos.ReporteRecibido;
 import ar.edu.um.programacion2.simple.dtos.RespuestaReporte;
@@ -28,17 +29,31 @@ public class ReporteController {
     // @Autowired
     // private TaskExecutor taskExecutor;
 
+    // // ReporteControler 
+    // @PostMapping("/CrearHistorico")
+    // public ResponseEntity<Sales> historicoPrueba(@Valid @RequestBody PeticionReporteHistorico peticionReporteHistorico, BindingResult bindingResult){
+    //     if (bindingResult.hasErrors())
+    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    //     DateRange dateRange = new DateRange(peticionReporteHistorico.getFechaInicio() ,peticionReporteHistorico.getFechaFin());
+    //     Sales sales = this.reporteHistoricoService.listar_ventas_para_reporte(dateRange);
+    //     // taskExecutor.execute(() -> {
+    //     //     this.reporteHistoricoService.enviar_reporte_historico(sales);
+    //     // });
+    //     return new ResponseEntity<>(sales, HttpStatus.OK);
+    // }
+
     // ReporteControler 
     @PostMapping("/CrearHistorico")
-    public ResponseEntity<Sales> historicoPrueba(@Valid @RequestBody PeticionReporteHistorico peticionReporteHistorico, BindingResult bindingResult){
+    public ResponseEntity<Message> historicoPrueba(@Valid @RequestBody PeticionReporteHistorico peticionReporteHistorico, BindingResult bindingResult){
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         DateRange dateRange = new DateRange(peticionReporteHistorico.getFechaInicio() ,peticionReporteHistorico.getFechaFin());
-        Sales sales = this.reporteHistoricoService.listar_ventas_para_reporte(dateRange);
+        // Sales sales = this.reporteHistoricoService.listar_ventas_para_reporte(dateRange);
         // taskExecutor.execute(() -> {
         //     this.reporteHistoricoService.enviar_reporte_historico(sales);
         // });
-        return new ResponseEntity<>(sales, HttpStatus.OK);
+        Message message = new Message("Creando Reporte");
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
     
 
