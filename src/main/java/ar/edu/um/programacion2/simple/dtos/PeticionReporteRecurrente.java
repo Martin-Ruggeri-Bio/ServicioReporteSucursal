@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.simple.dtos;
 
 import java.time.LocalDateTime;
+import java.time.Duration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,5 +14,5 @@ public class PeticionReporteRecurrente {
 	private String tipo;
 	private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
-	private String intervalo;
+	private Duration intervalo;
 }
