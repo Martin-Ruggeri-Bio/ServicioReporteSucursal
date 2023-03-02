@@ -3,6 +3,7 @@
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/service/ReporteHistoricoService.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/Sales.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/ReporteRecibido.java
+/home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/service/ReporteRecurrenteService.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/dtos/User.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/Application.java
 /home/martin/Facultad/Programacion2/FINAL/ServicioReporteSucursal/src/main/java/ar/edu/um/programacion2/simple/controller/ReporteController.java

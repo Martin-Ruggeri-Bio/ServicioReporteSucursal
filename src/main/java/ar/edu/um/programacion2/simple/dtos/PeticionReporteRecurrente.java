@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PeticionReporteRecurrente {
+	private Long id;
 	private String tipo;
 	private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
