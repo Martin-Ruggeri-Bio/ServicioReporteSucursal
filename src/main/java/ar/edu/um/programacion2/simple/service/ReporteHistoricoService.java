@@ -25,44 +25,41 @@ public class ReporteHistoricoService {
     @Value("${logginSucursal.id_tocken}")
     private String id_tocken_sucursal;
 
-	public Sales listar_ventas_para_reporte(DateRange dateRange)  {
-        log.debug("Listar ventas para hacer un reporte");
+    @Transactional
+	public void hacerReporteHistorico(DateRange dateRange)  {
+        log.info("Listar ventas para hacer un reporte");
         
-        WebClient webClient = WebClient
+        WebClient webClientFranquicia = WebClient
             .builder()
             .baseUrl("http://localhost:8085/saleDetail/date-between")
             .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.id_tocken_reporte)
             .build();
 
         // Realiza la llamada POST a la API del servicio de reporte y almacena el resultado en un Mono de tipo Message
-        Mono<Sales> sales = webClient
+        Mono<Sales> sales = webClientFranquicia
             .post()
             .body(Mono.just(dateRange), DateRange.class)
             .retrieve()
             .bodyToMono(Sales.class);
-        
-		return sales.block();
-    }
+        log.info("Ventas de reporte listadas");
 
-	@Transactional
-    public ReporteRecibido enviar_reporte_historico(Sales sales)  {
-		RespuestaReporte respuestaReporte = new RespuestaReporte("respuesta_reporte", sales.getDetail());
-        log.debug("Respuesta de reporte creada");
-        WebClient webClient = WebClient
+        log.info("Creando Reporte ");
+		RespuestaReporte respuestaReporte = new RespuestaReporte("respuesta_reporte", sales.block().getDetail());
+        log.info("Reporte Creado");
+        WebClient webClientPrincipal = WebClient
             .builder()
             .baseUrl("http://10.101.102.1:8080/api/reporte/datos")
             .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.id_tocken_sucursal)
             .build();
 
         // Realiza la llamada POST a la API del servicio de reporte y almacena el resultado en un Mono de tipo Message
-        Mono<ReporteRecibido> reporteRecibido = webClient
+        Mono<ReporteRecibido> reporteRecibido = webClientPrincipal
             .post()
             .body(BodyInserters.fromValue(respuestaReporte))
             .retrieve()
             .bodyToMono(ReporteRecibido.class);
         
-        log.debug("Respuesta de reporte enviada");
-        return reporteRecibido.block();
+        log.info("Reporte Historico Enviado, Respuesta del servidor principal es Status Code " + reporteRecibido.block().getEstado());
     }
 
 

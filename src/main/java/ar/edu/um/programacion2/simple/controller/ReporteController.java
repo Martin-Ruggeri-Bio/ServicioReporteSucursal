@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-// import org.springframework.core.task.TaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 
 import javax.validation.Valid;
 
@@ -26,8 +26,8 @@ public class ReporteController {
 	@Autowired
 	private ReporteHistoricoService reporteHistoricoService;
 
-    // @Autowired
-    // private TaskExecutor taskExecutor;
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     // // ReporteControler 
     // @PostMapping("/CrearHistorico")
@@ -49,9 +49,9 @@ public class ReporteController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         DateRange dateRange = new DateRange(peticionReporteHistorico.getFechaInicio() ,peticionReporteHistorico.getFechaFin());
         // Sales sales = this.reporteHistoricoService.listar_ventas_para_reporte(dateRange);
-        // taskExecutor.execute(() -> {
-        //     this.reporteHistoricoService.enviar_reporte_historico(sales);
-        // });
+        taskExecutor.execute(() -> {
+            this.reporteHistoricoService.hacerReporteHistorico(dateRange);
+        });
         Message message = new Message("Creando Reporte");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
