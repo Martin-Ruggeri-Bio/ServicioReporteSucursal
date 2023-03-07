@@ -12,4 +12,12 @@ public class AppConfig {
   public PeticionReporteRecurrente peticionReporteRecurrente() {
     return new PeticionReporteRecurrente();
   }
+  @Bean
+  public String id_tocken_reporte() {
+    return new String();
+  }
+  @Bean
+  public String id_tocken_sucursal() {
+    return new String();
+  }
 }

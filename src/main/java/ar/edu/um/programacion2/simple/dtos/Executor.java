@@ -1,46 +1,53 @@
-package ar.edu.um.programacion2.simple.service;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
-import org.springframework.web.reactive.function.client.WebClient;
+package ar.edu.um.programacion2.simple.dtos;
+
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.http.HttpHeaders;
 
-import ar.edu.um.programacion2.simple.dtos.Sales;
+import java.time.LocalDateTime;
+import java.time.Duration;
+import java.util.concurrent.Callable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ar.edu.um.programacion2.simple.dtos.DateRange;
-import ar.edu.um.programacion2.simple.dtos.PeticionReporteRecurrente;
-import ar.edu.um.programacion2.simple.dtos.RespuestaReporte;
-import ar.edu.um.programacion2.simple.dtos.ReporteRecibido;
 
 import reactor.core.publisher.Mono;
 
-@Service
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Slf4j
-public class ReporteRecurrenteService implements Runnable {
+public class Executor implements Callable<Boolean> {
+    private Long id;
+	private LocalDateTime fechaInicio;
+    private LocalDateTime fechaFin;
+	private Duration intervalo;
+    private volatile boolean cancelled;
     private String id_tocken_reporte;
     private String id_tocken_sucursal;
 
-    private PeticionReporteRecurrente reporte;
-
-    public ReporteRecurrenteService(PeticionReporteRecurrente reporte, String id_tocken_reporte, String id_tocken_sucursal) {
-        this.reporte = reporte;
-        this.id_tocken_reporte = id_tocken_reporte;
-        this.id_tocken_sucursal = id_tocken_sucursal;
-    }
-
     @Override
-    @Transactional
-    public void run() {
+    public Boolean call() throws Exception {
+        System.out.println("Arranca el hilo "+this.id +" Como executor");
         LocalDateTime fechaActual = LocalDateTime.now();
-
-        // Ejecutar el servicio mientras la fecha actual sea menor o igual a la fecha de finalización
-        while (fechaActual.isBefore(reporte.getFechaFin()) || fechaActual.isEqual(reporte.getFechaFin())) {
-            // Ejecutar la lógica del servicio
-            log.info("Ejecutando servicio de reporte recurrente de tipo " + reporte.getTipo() + "...");
+        Integer i = 0;
+        // reviso si la fecha de inicio es futura
+        if (fechaActual.isBefore(fechaInicio)){
+            Duration intervalo2 = Duration.between(fechaInicio, fechaFin);
+            Thread.sleep(intervalo2.toMillis());
+        }
+        while (fechaInicio.isBefore(fechaFin) || fechaInicio.isEqual(fechaFin)) {
+            if (cancelled) {
+                System.out.println("Se cancela el hilo "+this.id);
+                return false;
+            }
+            fechaActual = LocalDateTime.now();
+            System.out.println(String.format("Iteracion nro: %d del reporte nro: [%s]", i, this.id));
             log.info("Listar ventas para hacer un reporte");
-            log.info("Token:" + this.id_tocken_reporte);
-            DateRange dateRange = new DateRange(reporte.getFechaInicio() ,reporte.getFechaFin());
+            DateRange dateRange = new DateRange(fechaInicio, fechaFin);
             WebClient webClientFranquicia = WebClient
                 .builder()
                 .baseUrl("http://localhost:8085/saleDetail/date-between")
@@ -74,15 +81,19 @@ public class ReporteRecurrenteService implements Runnable {
             
             log.info("Reporte Recurrente Enviado, Respuesta del servidor principal es Status Code " + reporteRecibido.block().getEstado());
 
-            // Esperar el intervalo de tiempo especificado antes de ejecutar el servicio de nuevo
+            fechaInicio = fechaActual.plus(intervalo);
+            i = i + 1;
             try {
-                Thread.sleep(reporte.getIntervalo().toMillis());
+                Thread.sleep(this.intervalo.toMillis());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            // Actualizar la fecha actual antes de la próxima iteración
-            fechaActual = LocalDateTime.now();
         }
+        System.out.println("Se termina el hilo "+this.id);
+        return true;
+    }
+
+    public void cancel() {
+        cancelled = true;
     }
 }

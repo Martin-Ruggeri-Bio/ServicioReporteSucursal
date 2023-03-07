@@ -42,8 +42,8 @@ public class ReporteHistoricoService {
             .retrieve()
             .bodyToMono(Sales.class);
         log.info("Ventas de reporte listadas");
-
-        log.info("Creando Reporte ");
+        log.info("Creando Reporte " );
+        log.info("Token"+ this.id_tocken_reporte);
 		RespuestaReporte respuestaReporte = new RespuestaReporte("respuesta_reporte", sales.block().getDetail());
         log.info("Reporte Creado");
         WebClient webClientPrincipal = WebClient

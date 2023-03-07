@@ -24,8 +24,11 @@ logging:
       hibernate:
         SQL: debug
 
+cron:
+  expression: "*/10 * * * * *"
+
 servicioFranquicia:
   token_id: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTZXJ2aWNpb1JlcG9ydGUifQ.1csMCBbol89-VetlH3_VfXxny_61VYSOLjU_lI89czQ"
 
 logginSucursal:
-  id_tocken: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJ0aW5yIiwiYXV0aCI6IiIsImV4cCI6MTk5MjAwNzA4N30.2ukdNV8VMdoVr7ziPub6Ak7Or2iKnR5HF3VQIltZixlGIluoYSUxKajDypighSpWXdsgpe_7GWoMJ_SDhLObWg"
+  id_tocken: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJ0aW5yIiwiYXV0aCI6IiIsImV4cCI6MTk5MzIzMzU0NX0.GN22kVxrF_Vo1_3W93MkOTO5rDWxixRs3UDQD12pXje-ThCWd2d1GQK54h_OysUhXCyaU5-6eohQlc6g7OAtCA"
